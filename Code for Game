@@ -5,11 +5,13 @@ int main()
     sf::RenderWindow window(sf::VideoMode({640, 480}), "DROD:AE");
     sf::Texture MainMenu("Title.bmp");
     sf::Sprite MainMenuSprite(MainMenu);
-    sf::Sprite MainMenuHighlight(MainMenu);
+    sf::Sprite ContinueHighlightSprite(MainMenu);
+    sf::Sprite ContinuePressedSprite(MainMenu);
     sf::IntRect ContinueHighlight({641, 27}, {117, 41});
-    MainMenuHighlight.setPosition({424.f, 86.f});
     sf::IntRect ContinuePressed({641, 69}, {126, 50});
-    sf::FloatRect ContinueAreaFloat({424.f, 86.f}, {126.f, 50.f});
+    ContinueHighlightSprite.setPosition({430.f, 90.f});
+    ContinuePressedSprite.setPosition({424.f, 86.f});
+    sf::FloatRect ContinueAreaFloat({430.f, 90.f}, {126.f, 50.f});
     sf::Vector2i mousePos;
 
     while (window.isOpen())
@@ -19,16 +21,25 @@ int main()
 
         while (const std::optional event = window.pollEvent())
         {
-                    if (const auto* mouseButtonPressed = event->getIf<sf::Event::MouseButtonPressed>())
-{
     if (const auto* mouseMoved = event->getIf<sf::Event::MouseMoved>())
         {
                         mousePos = sf::Mouse::getPosition(window);
                         sf::Vector2f floatmousePos(mousePos);
                         if (ContinueAreaFloat.contains(floatmousePos))
-                MainMenuHighlight.setTextureRect(ContinueHighlight);
+                ContinueHighlightSprite.setTextureRect(ContinueHighlight);
         }
-}
+
+    if (const auto* mouseButtonPressed = event->getIf<sf::Event::MouseButtonPressed>())
+    {
+         if (mouseButtonPressed->button == sf::Mouse::Button::Left)
+    {
+                        mousePos = sf::Mouse::getPosition(window);
+                        sf::Vector2f floatmousePos(mousePos);
+                        if (ContinueAreaFloat.contains(floatmousePos))
+                ContinuePressedSprite.setTextureRect(ContinuePressed);
+    }
+    }
+
         {
             if (event->is<sf::Event::Closed>())
                 window.close();
@@ -44,8 +55,19 @@ int main()
         sf::Vector2f floatmousePos(mousePos);
                         if (ContinueAreaFloat.contains(floatmousePos))
                         {
-                MainMenuHighlight.setTextureRect(ContinueHighlight);
-                window.draw(MainMenuHighlight);
+                ContinueHighlightSprite.setTextureRect(ContinueHighlight);
+                window.draw(ContinueHighlightSprite);
+                        }
+        }
+
+ if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+        {
+        mousePos = sf::Mouse::getPosition(window);
+        sf::Vector2f floatmousePos(mousePos);
+                        if (ContinueAreaFloat.contains(floatmousePos))
+                        {
+                ContinuePressedSprite.setTextureRect(ContinuePressed);
+                window.draw(ContinuePressedSprite);
                         }
         }
 
