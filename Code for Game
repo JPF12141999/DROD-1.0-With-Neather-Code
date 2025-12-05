@@ -1,0 +1,47 @@
+#include <SFML/Graphics.hpp>
+
+int main()
+{
+    sf::RenderWindow window(sf::VideoMode({640, 480}), "DROD:AE");
+    sf::Texture MainMenu("Title.bmp");
+    sf::Sprite MainMenuSprite(MainMenu);
+    sf::Sprite MainMenuHighlight(MainMenu);
+    sf::IntRect ContinueHighlight({641, 27}, {117, 41});
+    MainMenuHighlight.setPosition({424.f, 86.f});
+    sf::IntRect ContinuePressed({641, 69}, {126, 50});
+    sf::FloatRect ContinueAreaFloat({424.f, 86.f}, {126.f, 50.f});
+    sf::Vector2i mousePos;
+
+    while (window.isOpen())
+
+    {
+
+        mousePos = sf::Mouse::getPosition(window);
+        sf::Vector2f floatmousePos(mousePos);
+
+
+        while (const std::optional event = window.pollEvent())
+        {
+                    if (!sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+        {
+                        if (ContinueAreaFloat.contains(floatmousePos))
+                MainMenuHighlight.setTextureRect(ContinueHighlight);
+        }
+        {
+            if (event->is<sf::Event::Closed>())
+                window.close();
+        }
+         }
+
+        window.clear();
+        window.draw(MainMenuSprite);
+
+ if (!sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+        {
+                        if (ContinueAreaFloat.contains(floatmousePos))
+                window.draw(MainMenuHighlight);
+        }
+
+        window.display();
+}
+}
