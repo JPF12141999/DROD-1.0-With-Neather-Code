@@ -6,7 +6,7 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode({640, 480}), "DROD:AE");
     sf::Clock clock;
-    sf::Time elapsed1 = clock.getElapsedTime();
+    bool ContinueIsWaitingtoDisappear = false;
     sf::Texture MainMenu("Title.bmp");
     sf::Sprite MainMenuSprite(MainMenu);
     sf::Sprite ContinueHighlightSprite(MainMenu);
@@ -28,40 +28,39 @@ int main()
         while (const std::optional event = window.pollEvent())
         {
 
-        if (const auto* mouseButtonReleased = event->getIf<sf::Event::MouseButtonReleased>())
-        {
-            if (mouseButtonReleased->button == sf::Mouse::Button::Left)
+            if (const auto* mouseButtonReleased = event->getIf<sf::Event::MouseButtonReleased>())
+            {
+                if (mouseButtonReleased->button == sf::Mouse::Button::Left)
+                {
+                    mousePos = sf::Mouse::getPosition(window);
+                    sf::Vector2f floatmousePos(mousePos);
+                    if (ContinueAreaFloat.contains(floatmousePos))
+                    {
+                        ContinuePressedSprite.setTextureRect(ContinuePressed);
+                        window.draw(ContinuePressedSprite);
+                    }
+                    if (ContinueIsWaitingtoDisappear && clock.getElapsedTime().asSeconds() > 1.f)
+                    {
+                        window.draw(MainMenuSprite);
+                    }
+                }
+            }
+
+            if (const auto* mouseMoved = event->getIf<sf::Event::MouseMoved>())
             {
                 mousePos = sf::Mouse::getPosition(window);
                 sf::Vector2f floatmousePos(mousePos);
                 if (ContinueAreaFloat.contains(floatmousePos))
-                {
-                    ContinuePressedSprite.setTextureRect(ContinuePressed);
-                    window.draw(ContinuePressedSprite);
-                }
-                if (elapsed1.asSeconds() >= 1.f)
-                {
-                    clock.restart();
-                    window.draw(MainMenuSprite);
-                }
+                    ContinueHighlightSprite.setTextureRect(ContinueHighlight);
+            }
+
+            {
+                if (event->is<sf::Event::Closed>())
+                    window.close();
             }
         }
 
-    if (const auto* mouseMoved = event->getIf<sf::Event::MouseMoved>())
-        {
-            mousePos = sf::Mouse::getPosition(window);
-            sf::Vector2f floatmousePos(mousePos);
-            if (ContinueAreaFloat.contains(floatmousePos))
-                ContinueHighlightSprite.setTextureRect(ContinueHighlight);
-        }
-
-        {
-            if (event->is<sf::Event::Closed>())
-                window.close();
-        }
-         }
-
- if (!sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+        if (!sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
         {
             mousePos = sf::Mouse::getPosition(window);
             sf::Vector2f floatmousePos(mousePos);
@@ -72,6 +71,12 @@ int main()
             }
         }
 
-    window.display();
-}
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+        {
+            ContinueIsWaitingtoDisappear = true;
+            clock.restart();
+        }
+
+        window.display();
+    }
 }
