@@ -49,7 +49,7 @@ int main()
             {
                 mousePos = sf::Mouse::getPosition(window);
                 sf::Vector2f floatmousePos(mousePos);
-                if (ContinueAreaFloat.contains(floatmousePos) && ContinueIsClicked == false)
+                if (ContinueAreaFloat.contains(floatmousePos) && !ContinueIsClicked)
                 {
                     ContinueHighlightSprite.setTextureRect(ContinueHighlight);
                     Draw = true;
@@ -65,7 +65,7 @@ int main()
                 window.close();
         }
 
-        if (ContinueIsClicked == true && clock.getElapsedTime().asSeconds() >= 1.f)
+        if (ContinueIsClicked && clock.getElapsedTime().asSeconds() >= 1.f)
         {
             window.draw(MainMenuSprite);
             ContinueIsClicked = false;
@@ -73,14 +73,14 @@ int main()
         }
         else
         {
-            if (ContinueIsClicked == true)
+            if (ContinueIsClicked)
             {
                 ContinuePressedSprite.setTextureRect(ContinuePressed);
                 window.draw(ContinuePressedSprite);
             }
         }
 
-        if (Draw == true)
+        if (Draw)
         {
             ContinueHighlightSprite.setTextureRect(ContinueHighlight);
             window.draw(ContinueHighlightSprite);
