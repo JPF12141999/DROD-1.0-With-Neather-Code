@@ -7,6 +7,7 @@ int main()
     sf::RenderWindow window(sf::VideoMode({640, 480}), "DROD:AE");
     sf::Clock clock;
     bool ContinueIsWaitingtoDisappear = false;
+    bool ContinueButtonClicked = false;
     sf::Texture MainMenu("Title.bmp");
     sf::Sprite MainMenuSprite(MainMenu);
     sf::Sprite ContinueHighlightSprite(MainMenu);
@@ -27,24 +28,6 @@ int main()
 
         while (const std::optional event = window.pollEvent())
         {
-
-            if (const auto* mouseButtonReleased = event->getIf<sf::Event::MouseButtonReleased>())
-            {
-                if (mouseButtonReleased->button == sf::Mouse::Button::Left)
-                {
-                    mousePos = sf::Mouse::getPosition(window);
-                    sf::Vector2f floatmousePos(mousePos);
-                    if (ContinueAreaFloat.contains(floatmousePos))
-                    {
-                        ContinuePressedSprite.setTextureRect(ContinuePressed);
-                        window.draw(ContinuePressedSprite);
-                    }
-                    if (ContinueIsWaitingtoDisappear && clock.getElapsedTime().asSeconds() > 1.f)
-                    {
-                        window.draw(MainMenuSprite);
-                    }
-                }
-            }
 
             if (const auto* mouseMoved = event->getIf<sf::Event::MouseMoved>())
             {
@@ -73,8 +56,27 @@ int main()
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
         {
-            ContinueIsWaitingtoDisappear = true;
-            clock.restart();
+            mousePos = sf::Mouse::getPosition(window);
+            sf::Vector2f floatmousePos(mousePos);
+            if (ContinueAreaFloat.contains(floatmousePos))
+            {
+                ContinueButtonClicked = true;
+                ContinueIsWaitingtoDisappear = true;
+                clock.restart();
+            }
+        }
+
+        if (ContinueIsWaitingtoDisappear && clock.getElapsedTime().asSeconds() > 1.f)
+        {
+            window.draw(MainMenuSprite);
+        }
+        else
+        {
+            if (ContinueButtonClicked = true)
+            {
+                ContinuePressedSprite.setTextureRect(ContinuePressed);
+                window.draw(ContinuePressedSprite);
+            }
         }
 
         window.display();
