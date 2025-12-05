@@ -11,8 +11,14 @@ int main()
         Unclicked,
         Clicked
     };
+    enum class DrawHighlight
+    {
+        Donot,
+        Do
+    };
     ContinueButton IsWaitingtoDisappear = ContinueButton::Unclicked;
     ContinueButton IsClicked = ContinueButton::Unclicked;
+    DrawHighlight Draw = DrawHighlight::Donot;
     sf::Texture MainMenu("Title.bmp");
     sf::Sprite MainMenuSprite(MainMenu);
     sf::Sprite ContinueHighlightSprite(MainMenu);
@@ -34,15 +40,6 @@ int main()
         while (const std::optional event = window.pollEvent())
         {
 
-            if (const auto* mouseMoved = event->getIf<sf::Event::MouseMoved>())
-            {
-                mousePos = sf::Mouse::getPosition(window);
-                sf::Vector2f floatmousePos(mousePos);
-                if (ContinueAreaFloat.contains(floatmousePos))
-                    ContinueHighlightSprite.setTextureRect(ContinueHighlight);
-                window.draw(ContinueHighlightSprite);
-            }
-
             if (const auto* mouseButtonPressed = event->getIf<sf::Event::MouseButtonPressed>())
             {
                 if (mouseButtonPressed->button == sf::Mouse::Button::Left)
@@ -56,9 +53,26 @@ int main()
                         clock.restart();
                     }
                 }
-                if (event->is<sf::Event::Closed>())
-                    window.close();
             }
+
+            if (const auto* mouseMoved = event->getIf<sf::Event::MouseMoved>())
+            {
+                mousePos = sf::Mouse::getPosition(window);
+                sf::Vector2f floatmousePos(mousePos);
+                if (ContinueAreaFloat.contains(floatmousePos) && IsClicked == ContinueButton::Unclicked)
+                {
+                    ContinueHighlightSprite.setTextureRect(ContinueHighlight);
+                    Draw = DrawHighlight::Do;
+                }
+                else
+                {
+                    Draw = DrawHighlight::Donot;
+                }
+            }
+
+
+            if (event->is<sf::Event::Closed>())
+                window.close();
         }
 
         if (IsClicked == ContinueButton::Clicked && clock.getElapsedTime().asSeconds() >= 1.f)
@@ -74,6 +88,12 @@ int main()
                 ContinuePressedSprite.setTextureRect(ContinuePressed);
                 window.draw(ContinuePressedSprite);
             }
+        }
+
+        if (Draw == DrawHighlight::Do)
+        {
+            ContinueHighlightSprite.setTextureRect(ContinueHighlight);
+            window.draw(ContinueHighlightSprite);
         }
 
         window.display();
