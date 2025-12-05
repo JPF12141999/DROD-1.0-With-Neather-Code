@@ -72,7 +72,7 @@ int main()
         }
         else
         {
-            if (ContinueButtonClicked = true)
+            if (ContinueButtonClicked == true)
             {
                 ContinuePressedSprite.setTextureRect(ContinuePressed);
                 window.draw(ContinuePressedSprite);
