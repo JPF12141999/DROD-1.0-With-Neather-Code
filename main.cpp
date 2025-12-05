@@ -6,19 +6,9 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode({640, 480}), "DROD:AE");
     sf::Clock clock;
-    enum class ContinueButton
-    {
-        Unclicked,
-        Clicked
-    };
-    enum class DrawHighlight
-    {
-        Donot,
-        Do
-    };
-    ContinueButton IsWaitingtoDisappear = ContinueButton::Unclicked;
-    ContinueButton IsClicked = ContinueButton::Unclicked;
-    DrawHighlight Draw = DrawHighlight::Donot;
+    bool ContinueIsWaitingtoDisappear = false;
+    bool ContinueIsClicked = false;
+    bool Draw = false;
     sf::Texture MainMenu("Title.bmp");
     sf::Sprite MainMenuSprite(MainMenu);
     sf::Sprite ContinueHighlightSprite(MainMenu);
@@ -48,8 +38,8 @@ int main()
                     sf::Vector2f floatmousePos(mousePos);
                     if (ContinueAreaFloat.contains(floatmousePos))
                     {
-                        IsClicked = ContinueButton::Clicked;
-                        IsWaitingtoDisappear = ContinueButton::Clicked;
+                        ContinueIsClicked = true;
+                        ContinueIsWaitingtoDisappear = true;
                         clock.restart();
                     }
                 }
@@ -59,14 +49,14 @@ int main()
             {
                 mousePos = sf::Mouse::getPosition(window);
                 sf::Vector2f floatmousePos(mousePos);
-                if (ContinueAreaFloat.contains(floatmousePos) && IsClicked == ContinueButton::Unclicked)
+                if (ContinueAreaFloat.contains(floatmousePos) && ContinueIsClicked == false)
                 {
                     ContinueHighlightSprite.setTextureRect(ContinueHighlight);
-                    Draw = DrawHighlight::Do;
+                    Draw = true;
                 }
                 else
                 {
-                    Draw = DrawHighlight::Donot;
+                    Draw = false;
                 }
             }
 
@@ -75,22 +65,22 @@ int main()
                 window.close();
         }
 
-        if (IsClicked == ContinueButton::Clicked && clock.getElapsedTime().asSeconds() >= 1.f)
+        if (ContinueIsClicked == true && clock.getElapsedTime().asSeconds() >= 1.f)
         {
             window.draw(MainMenuSprite);
-            IsClicked = ContinueButton::Unclicked;
-            IsWaitingtoDisappear = ContinueButton::Unclicked;
+            ContinueIsClicked = false;
+            ContinueIsWaitingtoDisappear = false;
         }
         else
         {
-            if (IsClicked == ContinueButton::Clicked)
+            if (ContinueIsClicked == true)
             {
                 ContinuePressedSprite.setTextureRect(ContinuePressed);
                 window.draw(ContinuePressedSprite);
             }
         }
 
-        if (Draw == DrawHighlight::Do)
+        if (Draw == true)
         {
             ContinueHighlightSprite.setTextureRect(ContinueHighlight);
             window.draw(ContinueHighlightSprite);
