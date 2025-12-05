@@ -18,9 +18,22 @@ int main()
 
     {
 
-
         while (const std::optional event = window.pollEvent())
         {
+
+        if (const auto* mouseButtonReleased = event->getIf<sf::Event::MouseButtonReleased>())
+        {
+            if (mouseButtonReleased->button == sf::Mouse::Button::Left)
+            {
+                        mousePos = sf::Mouse::getPosition(window);
+                        sf::Vector2f floatmousePos(mousePos);
+                        if (ContinueAreaFloat.contains(floatmousePos))
+                ContinuePressedSprite.setTextureRect(ContinuePressed);
+        window.clear();
+        window.draw(ContinuePressedSprite);
+            }
+        }
+
     if (const auto* mouseMoved = event->getIf<sf::Event::MouseMoved>())
         {
                         mousePos = sf::Mouse::getPosition(window);
@@ -28,17 +41,6 @@ int main()
                         if (ContinueAreaFloat.contains(floatmousePos))
                 ContinueHighlightSprite.setTextureRect(ContinueHighlight);
         }
-
-    if (const auto* mouseButtonPressed = event->getIf<sf::Event::MouseButtonPressed>())
-    {
-         if (mouseButtonPressed->button == sf::Mouse::Button::Left)
-    {
-                        mousePos = sf::Mouse::getPosition(window);
-                        sf::Vector2f floatmousePos(mousePos);
-                        if (ContinueAreaFloat.contains(floatmousePos))
-                ContinuePressedSprite.setTextureRect(ContinuePressed);
-    }
-    }
 
         {
             if (event->is<sf::Event::Closed>())
@@ -57,17 +59,6 @@ int main()
                         {
                 ContinueHighlightSprite.setTextureRect(ContinueHighlight);
                 window.draw(ContinueHighlightSprite);
-                        }
-        }
-
- if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
-        {
-        mousePos = sf::Mouse::getPosition(window);
-        sf::Vector2f floatmousePos(mousePos);
-                        if (ContinueAreaFloat.contains(floatmousePos))
-                        {
-                ContinuePressedSprite.setTextureRect(ContinuePressed);
-                window.draw(ContinuePressedSprite);
                         }
         }
 
