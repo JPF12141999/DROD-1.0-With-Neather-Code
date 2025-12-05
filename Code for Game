@@ -1,4 +1,6 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/System/Clock.hpp>
+#include <SFML/System/Time.hpp>
 
 int main()
 {
@@ -18,6 +20,9 @@ int main()
 
     {
 
+        window.clear();
+        window.draw(MainMenuSprite);
+
         while (const std::optional event = window.pollEvent())
         {
 
@@ -27,10 +32,20 @@ int main()
             {
                         mousePos = sf::Mouse::getPosition(window);
                         sf::Vector2f floatmousePos(mousePos);
-                        if (ContinueAreaFloat.contains(floatmousePos))
+                        sf::Clock clock;
+                        sf::Time elapsed1 = clock.getElapsedTime();
+                        sf::Time clocktimepassed;
+                        elapsed1.asSeconds() = clocktimepassed;
+                            if (ContinueAreaFloat.contains(floatmousePos))
+                            {
                 ContinuePressedSprite.setTextureRect(ContinuePressed);
-        window.clear();
         window.draw(ContinuePressedSprite);
+                            }
+                        if (clocktimepassed == 1)
+                        {
+                            clock.restart();
+                            window.draw(MainMenuSprite);
+                        }
             }
         }
 
@@ -47,9 +62,6 @@ int main()
                 window.close();
         }
          }
-
-        window.clear();
-        window.draw(MainMenuSprite);
 
  if (!sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
         {
