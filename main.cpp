@@ -7,7 +7,6 @@ int main()
     sf::RenderWindow window(sf::VideoMode({640, 480}), "DROD:AE");
     sf::Clock clock;
     sf::Time elapsed1 = clock.getElapsedTime();
-    sf::Time clocktimepassed;
     sf::Texture MainMenu("Title.bmp");
     sf::Sprite MainMenuSprite(MainMenu);
     sf::Sprite ContinueHighlightSprite(MainMenu);
@@ -35,17 +34,16 @@ int main()
             {
                 mousePos = sf::Mouse::getPosition(window);
                 sf::Vector2f floatmousePos(mousePos);
-                elapsed1 = clocktimepassed;
                 if (ContinueAreaFloat.contains(floatmousePos))
                 {
                     ContinuePressedSprite.setTextureRect(ContinuePressed);
                     window.draw(ContinuePressedSprite);
                 }
-                    if (elapsed1 == 1)
-                    {
-                        clock.restart();
-                        window.draw(MainMenuSprite);
-                    }
+                if (elapsed1.asSeconds() >= 1.f)
+                {
+                    clock.restart();
+                    window.draw(MainMenuSprite);
+                }
             }
         }
 
@@ -74,6 +72,6 @@ int main()
             }
         }
 
-        window.display();
-    }
+    window.display();
+}
 }
