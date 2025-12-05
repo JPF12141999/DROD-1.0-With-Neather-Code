@@ -66,9 +66,10 @@ int main()
             }
         }
 
-        if (ContinueIsWaitingtoDisappear && clock.getElapsedTime().asSeconds() > 1.f)
+        if (ContinueIsWaitingtoDisappear && clock.getElapsedTime().asSeconds() >= 1.f)
         {
             window.draw(MainMenuSprite);
+            ContinueButtonClicked = false;
         }
         else
         {
