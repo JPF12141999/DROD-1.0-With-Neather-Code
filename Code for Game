@@ -16,17 +16,19 @@ int main()
 
     {
 
-        mousePos = sf::Mouse::getPosition(window);
-        sf::Vector2f floatmousePos(mousePos);
-
 
         while (const std::optional event = window.pollEvent())
         {
-                    if (!sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+                    if (const auto* mouseButtonPressed = event->getIf<sf::Event::MouseButtonPressed>())
+{
+    if (const auto* mouseMoved = event->getIf<sf::Event::MouseMoved>())
         {
+                        mousePos = sf::Mouse::getPosition(window);
+                        sf::Vector2f floatmousePos(mousePos);
                         if (ContinueAreaFloat.contains(floatmousePos))
                 MainMenuHighlight.setTextureRect(ContinueHighlight);
         }
+}
         {
             if (event->is<sf::Event::Closed>())
                 window.close();
@@ -38,8 +40,13 @@ int main()
 
  if (!sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
         {
+        mousePos = sf::Mouse::getPosition(window);
+        sf::Vector2f floatmousePos(mousePos);
                         if (ContinueAreaFloat.contains(floatmousePos))
+                        {
+                MainMenuHighlight.setTextureRect(ContinueHighlight);
                 window.draw(MainMenuHighlight);
+                        }
         }
 
         window.display();
