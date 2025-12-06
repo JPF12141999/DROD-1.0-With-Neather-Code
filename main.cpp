@@ -66,25 +66,24 @@ int main()
                 window.close();
         }
 
-        if (ContinueIsClicked && clock.getElapsedTime().asSeconds() >= 1.f)
+        if (ContinueIsClicked)
         {
-            window.draw(MainMenuSprite);
-            ContinueIsClicked = false;
-            ContinueIsWaitingtoDisappear = false;
-        }
-        else
-        {
-            if (ContinueIsClicked)
+            if (clock.getElapsedTime().asSeconds() >= 1.f)
             {
-                window.draw(ContinuePressedSprite);
+                window.draw(MainMenuSprite);
+                ContinueIsClicked = false;
+                ContinueIsWaitingtoDisappear = false;
             }
+            else
+                window.draw(ContinuePressedSprite);
         }
 
-        if (Draw)
-        {
-            window.draw(ContinueHighlightSprite);
-        }
-
-        window.display();
     }
+
+    if (Draw)
+    {
+        window.draw(ContinueHighlightSprite);
+    }
+
+    window.display();
 }
