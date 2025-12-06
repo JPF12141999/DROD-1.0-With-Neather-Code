@@ -66,7 +66,7 @@ int main()
                 window.close();
         }
 
-        /* if (ContinueIsClicked)
+        if (ContinueIsClicked)
         {
             if (clock.getElapsedTime().asSeconds() >= 1.f)
             {
@@ -76,12 +76,12 @@ int main()
             else
                 window.draw(ContinuePressedSprite);
         }
-        */
-    }
 
-    if (Draw)
-    {
-        window.draw(ContinueHighlightSprite);
+        if (Draw)
+        {
+            window.draw(ContinueHighlightSprite);
+        }
+
     }
 
     window.display();
