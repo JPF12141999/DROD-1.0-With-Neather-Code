@@ -6,21 +6,29 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode({640, 480}), "DROD:AE");
     sf::Clock clock;
-    bool ContinueIsWaitingtoDisappear = false;
-    bool ContinueIsClicked = false;
+    enum class ContinueButtonState
+    {
+        nothing,
+        hovered,
+        pressed
+    };
+    ContinueButtonState ContinueState = ContinueButtonState::nothing;
     bool Draw = false;
     sf::Texture MainMenu("Title.bmp");
     sf::Sprite MainMenuSprite(MainMenu);
+    sf::Sprite Continue(MainMenu);
     sf::Sprite ContinueHighlightSprite(MainMenu);
     sf::Sprite ContinuePressedSprite(MainMenu);
+    sf::IntRect ContinueRect({424, 86}, {126, 49});
     sf::IntRect ContinueHighlight({641, 27}, {117, 41});
     sf::IntRect ContinuePressed({641, 69}, {126, 50});
+    Continue.setPosition({424.f, 86.f});
+    Continue.setTextureRect(ContinueRect);
     ContinueHighlightSprite.setPosition({430.f, 90.f});
     ContinueHighlightSprite.setTextureRect(ContinueHighlight);
     ContinuePressedSprite.setPosition({424.f, 86.f});
     ContinuePressedSprite.setTextureRect(ContinuePressed);
-    sf::FloatRect ContinueAreaFloat(ContinueHighlightSprite.getGlobalBounds());
-    sf::Vector2i mousePos;
+    sf::Vector2f mousePos;
 
     while (window.isOpen())
 
@@ -36,12 +44,8 @@ int main()
             {
                 if (mouseButtonPressed->button == sf::Mouse::Button::Left)
                 {
-                    mousePos = sf::Mouse::getPosition(window);
-                    sf::Vector2f floatmousePos(mousePos);
-                    if (ContinueAreaFloat.contains(floatmousePos))
+                    if (Continue.getGlobalBounds().contains(mousePos))
                     {
-                        ContinueIsClicked = true;
-                        ContinueIsWaitingtoDisappear = true;
                         clock.restart();
                     }
                 }
@@ -49,9 +53,7 @@ int main()
 
             if (const auto* mouseMoved = event->getIf<sf::Event::MouseMoved>())
             {
-                mousePos = sf::Mouse::getPosition(window);
-                sf::Vector2f floatmousePos(mousePos);
-                if (ContinueAreaFloat.contains(floatmousePos) && !ContinueIsClicked)
+                if ((Continue.getGlobalBounds().contains(sf::Vector2f(mousePos)) && ContinueState != ContinueButtonState::pressed))
                 {
                     Draw = true;
                 }
@@ -66,15 +68,17 @@ int main()
                 window.close();
         }
 
-        if (ContinueIsClicked)
+        if (ContinueState != ContinueButtonState::pressed)
         {
-            if (clock.getElapsedTime().asSeconds() >= 1.f)
+            if (Continue.getGlobalBounds().contains(sf::Vector2f(mousePos)))
             {
-                ContinueIsClicked = false;
-                ContinueIsWaitingtoDisappear = false;
+                Continue.setTextureRect(ContinueHighlight);
+                ContinueState = ContinueButtonState::hovered;
             }
             else
-                window.draw(ContinuePressedSprite);
+            {
+                ContinueState = ContinueButtonState::nothing;
+            }
         }
 
         if (Draw)
@@ -82,7 +86,6 @@ int main()
             window.draw(ContinueHighlightSprite);
         }
 
+        window.display();
     }
-
-    window.display();
 }
