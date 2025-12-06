@@ -47,6 +47,7 @@ int main()
                 {
                     if (Continue.getGlobalBounds().contains(mousePos))
                     {
+                        ContinueState = ContinueButtonState::pressed;
                         clock.restart();
                     }
                 }
