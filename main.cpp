@@ -6,6 +6,7 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode({640, 480}), "DROD:AE");
     sf::Clock clock;
+    sf::Time elapsed = clock.getElapsedTime();
     enum class ContinueButtonState
     {
         nothing,
@@ -66,6 +67,11 @@ int main()
 
             if (event->is<sf::Event::Closed>())
                 window.close();
+        }
+
+        if ((ContinueState == ContinueButtonState::pressed) && (elapsed.asSeconds() <= 1.f))
+        {
+            ContinueState = ContinueButtonState::pressed;
         }
 
         if (ContinueState != ContinueButtonState::pressed)
