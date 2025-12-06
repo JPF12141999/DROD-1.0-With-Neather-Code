@@ -66,18 +66,17 @@ int main()
                 window.close();
         }
 
-        if (ContinueIsClicked)
+        /* if (ContinueIsClicked)
         {
             if (clock.getElapsedTime().asSeconds() >= 1.f)
             {
-                window.draw(MainMenuSprite);
                 ContinueIsClicked = false;
                 ContinueIsWaitingtoDisappear = false;
             }
             else
                 window.draw(ContinuePressedSprite);
         }
-
+        */
     }
 
     if (Draw)
