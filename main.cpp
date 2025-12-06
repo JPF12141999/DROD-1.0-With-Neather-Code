@@ -18,7 +18,6 @@ int main()
     ContinueHighlightSprite.setPosition({430.f, 90.f});
     ContinuePressedSprite.setPosition({424.f, 86.f});
     sf::FloatRect ContinueAreaFloat(ContinueHighlightSprite.getGlobalBounds());
-    ContinuePressedSprite.getGlobalBounds();
     sf::Vector2i mousePos;
 
     while (window.isOpen())
