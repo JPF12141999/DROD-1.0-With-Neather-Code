@@ -16,7 +16,9 @@ int main()
     sf::IntRect ContinueHighlight({641, 27}, {117, 41});
     sf::IntRect ContinuePressed({641, 69}, {126, 50});
     ContinueHighlightSprite.setPosition({430.f, 90.f});
+    ContinueHighlightSprite.setTextureRect(ContinueHighlight);
     ContinuePressedSprite.setPosition({424.f, 86.f});
+    ContinuePressedSprite.setTextureRect(ContinuePressed);
     sf::FloatRect ContinueAreaFloat(ContinueHighlightSprite.getGlobalBounds());
     sf::Vector2i mousePos;
 
@@ -51,7 +53,6 @@ int main()
                 sf::Vector2f floatmousePos(mousePos);
                 if (ContinueAreaFloat.contains(floatmousePos) && !ContinueIsClicked)
                 {
-                    ContinueHighlightSprite.setTextureRect(ContinueHighlight);
                     Draw = true;
                 }
                 else
@@ -75,14 +76,12 @@ int main()
         {
             if (ContinueIsClicked)
             {
-                ContinuePressedSprite.setTextureRect(ContinuePressed);
                 window.draw(ContinuePressedSprite);
             }
         }
 
         if (Draw)
         {
-            ContinueHighlightSprite.setTextureRect(ContinueHighlight);
             window.draw(ContinueHighlightSprite);
         }
 
